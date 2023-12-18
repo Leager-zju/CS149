@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <thread>
 
-#include "CycleTimer.h"
-
 typedef struct {
     float x0, x1;
     float y0, y1;
