@@ -1,0 +1,4 @@
+*.o
+*.ppm
+compile_commands.json
+*.cache

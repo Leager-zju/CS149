@@ -2,8 +2,9 @@
 #define LOGGER_H_
 
 #include <stdio.h>
-#include <vector>
 #include <string.h>
+
+#include <vector>
 using namespace std;
 
 #define MAX_INST_LEN 32
@@ -12,7 +13,7 @@ struct __cs149_mask;
 
 struct Log {
   char instruction[MAX_INST_LEN];
-  unsigned long long mask; // support vector width up to 64
+  unsigned long long mask;  // support vector width up to 64
 };
 
 struct Statistics {
@@ -22,14 +23,14 @@ struct Statistics {
 };
 
 class Logger {
-  private:
-    vector<Log> log;
-    Statistics stats;
+ private:
+  vector<Log> log;
+  Statistics stats;
 
-  public:
-    void addLog(const char * instruction, __cs149_mask mask, int N = 0);
-    void printStats();
-    void printLog();
+ public:
+  void addLog(const char* instruction, __cs149_mask mask, int N = 0);
+  void printStats();
+  void printLog();
 };
 
 #endif
