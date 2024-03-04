@@ -1,7 +1,8 @@
-#include <algorithm>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <algorithm>
 #include <thread>
 
 #include "CycleTimer.h"
@@ -20,32 +21,30 @@ typedef struct {
   int M, N, K;
 } WorkerArgs;
 
-
 /**
  * Checks if the algorithm has converged.
- * 
- * @param prevCost Pointer to the K dimensional array containing cluster costs 
+ *
+ * @param prevCost Pointer to the K dimensional array containing cluster costs
  *    from the previous iteration.
- * @param currCost Pointer to the K dimensional array containing cluster costs 
+ * @param currCost Pointer to the K dimensional array containing cluster costs
  *    from the current iteration.
  * @param epsilon Predefined hyperparameter which is used to determine when
  *    the algorithm has converged.
  * @param K The number of clusters.
- * 
+ *
  * NOTE: DO NOT MODIFY THIS FUNCTION!!!
  */
 static bool stoppingConditionMet(double *prevCost, double *currCost,
                                  double epsilon, int K) {
   for (int k = 0; k < K; k++) {
-    if (abs(prevCost[k] - currCost[k]) > epsilon)
-      return false;
+    if (abs(prevCost[k] - currCost[k]) > epsilon) return false;
   }
   return true;
 }
 
 /**
  * Computes L2 distance between two points of dimension nDim.
- * 
+ *
  * @param x Pointer to the beginning of the array representing the first
  *     data point.
  * @param y Poitner to the beginning of the array representing the second
@@ -66,9 +65,9 @@ double dist(double *x, double *y, int nDim) {
  */
 void computeAssignments(WorkerArgs *const args) {
   double *minDist = new double[args->M];
-  
+
   // Initialize arrays
-  for (int m =0; m < args->M; m++) {
+  for (int m = 0; m < args->M; m++) {
     minDist[m] = 1e30;
     args->clusterAssignments[m] = -1;
   }
@@ -103,20 +102,18 @@ void computeCentroids(WorkerArgs *const args) {
     }
   }
 
-
   // Sum up contributions from assigned examples
   for (int m = 0; m < args->M; m++) {
     int k = args->clusterAssignments[m];
     for (int n = 0; n < args->N; n++) {
-      args->clusterCentroids[k * args->N + n] +=
-          args->data[m * args->N + n];
+      args->clusterCentroids[k * args->N + n] += args->data[m * args->N + n];
     }
     counts[k]++;
   }
 
   // Compute means
   for (int k = 0; k < args->K; k++) {
-    counts[k] = max(counts[k], 1); // prevent divide by 0
+    counts[k] = max(counts[k], 1);  // prevent divide by 0
     for (int n = 0; n < args->N; n++) {
       args->clusterCentroids[k * args->N + n] /= counts[k];
     }
@@ -154,12 +151,12 @@ void computeCost(WorkerArgs *const args) {
 /**
  * Computes the K-Means algorithm, using std::thread to parallelize the work.
  *
- * @param data Pointer to an array of length M*N representing the M different N 
+ * @param data Pointer to an array of length M*N representing the M different N
  *     dimensional data points clustered. The data is layed out in a "data point
- *     major" format, so that data[i*N] is the start of the i'th data point in 
- *     the array. The N values of the i'th datapoint are the N values in the 
+ *     major" format, so that data[i*N] is the start of the i'th data point in
+ *     the array. The N values of the i'th datapoint are the N values in the
  *     range data[i*N] to data[(i+1) * N].
- * @param clusterCentroids Pointer to an array of length K*N representing the K 
+ * @param clusterCentroids Pointer to an array of length K*N representing the K
  *     different N dimensional cluster centroids. The data is laid out in
  *     the same way as explained above for data.
  * @param clusterAssignments Pointer to an array of length M representing the
@@ -171,9 +168,9 @@ void computeCost(WorkerArgs *const args) {
  * @param epsilon The algorithm is said to have converged when
  *     |currCost[i] - prevCost[i]| < epsilon for all i where i = 0, 1, ..., K-1
  */
-void kMeansThread(double *data, double *clusterCentroids, int *clusterAssignments,
-               int M, int N, int K, double epsilon) {
-
+void kMeansThread(double *data, double *clusterCentroids,
+                  int *clusterAssignments, int M, int N, int K,
+                  double epsilon) {
   // Used to track convergence
   double *prevCost = new double[K];
   double *currCost = new double[K];

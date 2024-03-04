@@ -1,9 +1,10 @@
-#include <algorithm>
-#include <iostream>
 #include <math.h>
-#include <random>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
 #include <string>
 
 #include "CycleTimer.h"
@@ -15,8 +16,8 @@ using namespace std;
 
 // Main compute functions
 extern void kMeansThread(double *data, double *clusterCentroids,
-                      int *clusterAssignments, int M, int N, int K,
-                      double epsilon);
+                         int *clusterAssignments, int M, int N, int K,
+                         double epsilon);
 extern double dist(double *x, double *y, int nDim);
 
 // Utilities
@@ -54,7 +55,7 @@ void initData(double *data, int M, int N) {
 
   // Even clustering
   for (int m = 0; m < M; m++) {
-    int startingPoint = rand() % K; // Which center to start from
+    int startingPoint = rand() % K;  // Which center to start from
     for (int n = 0; n < N; n++) {
       double noise = normal_dist(generator);
       data[m * N + n] = centers[startingPoint * N + n] + noise;
@@ -127,8 +128,8 @@ int main() {
   //           &K, &epsilon);
   */
 
-  printf("Running K-means with: M=%d, N=%d, K=%d, epsilon=%f\n", M, N,
-         K, epsilon);
+  printf("Running K-means with: M=%d, N=%d, K=%d, epsilon=%f\n", M, N, K,
+         epsilon);
 
   // Log the starting state of the algorithm
   logToFile("./start.log", SAMPLE_RATE, data, clusterAssignments,

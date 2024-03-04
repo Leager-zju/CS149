@@ -1,6 +1,7 @@
+#include <stdio.h>
+
 #include <fstream>
 #include <iostream>
-#include <stdio.h>
 #include <string>
 
 using namespace std;
@@ -64,8 +65,10 @@ void readData(string filename, double **data, double **clusterCentroids,
 
   ifstream dataFile(filename, ios::in | ios::binary);
   if (dataFile.fail()) {
-      cout << "Couldn't open the file! Please make sure data.dat exists... Exiting." << endl;
-      exit(EXIT_FAILURE);
+    cout << "Couldn't open the file! Please make sure data.dat exists... "
+            "Exiting."
+         << endl;
+    exit(EXIT_FAILURE);
   }
 
   dataFile.read((char *)M_p, sizeof(int));
